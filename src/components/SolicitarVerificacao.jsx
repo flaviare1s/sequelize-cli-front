@@ -1,29 +1,33 @@
 import { useEffect, useState } from "react";
 import api from "../api";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const SolicitarVerificacao = () => {
   const location = useLocation();
-  const [email, setEmail] = useState('');
-  const [erro, setErro] = useState('');
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [erro, setErro] = useState("");
 
   useEffect(() => {
-    if(location.state?.email) {
-      setEmail(location.state.email)
+    if (location.state?.email) {
+      setEmail(location.state.email);
     }
-  }, [location])
+  }, [location]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErro('');
-    
+    setErro("");
+
     try {
       const response = await api.post("usuarios/solicitar-verificacao", {
         email,
       });
-
+      if (response.status === 200) {
+        navigate("/verificar-email", {state: { email }});
+      }
     } catch (err) {
-      const errMsg = err.response?.data?.erro || 'Erro ao solicitar verificação'
+      const errMsg =
+        err.response?.data?.erro || "Erro ao solicitar verificação";
       console.log(errMsg);
     }
   };
