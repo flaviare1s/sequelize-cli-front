@@ -21,7 +21,7 @@ import { useAuth } from "../context/AuthContext";
                     'Erro ao realizar login.';
     
                 if (mensagem.toLowerCase().includes('email não verificado')) {
-                    navigate('/usuarios/solicitar-verificacao', { state: { email } });
+                    navigate('/solicitar-verificacao', { state: { email } });
                 } else {
                     setErro(mensagem);
                 }
